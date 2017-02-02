@@ -21,10 +21,8 @@ before_cache:
   - docker exec --user=postgres postgresql pg_dump rapidpro > $HOME/postgresql/rapidpro.sql
 
 before_script:
-  - image="sdehaan/rapidpro-docker"
-  - repository="smn/rapidpro"
-  - # version=$(curl -s https://api.github.com/repos/nyaruka/rapidpro/tags  | jq -r 'map(select(.name | test("^v[0-9\\.]+$"))) | .[0].name')
-  - version="feature/junebug-channel"
+  - image="rapidpro/rapidpro"
+  - version=$(curl -s https://api.github.com/repos/rapidpro/rapidpro/tags  | jq -r 'map(select(.name | test("^v[0-9\\.]+$"))) | .[0].name')
 
 script:
   # Setup postgresql and load sql dump if exists
@@ -45,6 +43,8 @@ script:
     docker build --tag "$image" \
       --build-arg RAPIDPRO_VERSION=$version \
       --build-arg RAPIDPRO_REPOSITORY=$repository \
+      --build-arg VCS_REF=$TRAVIS_COMMIT \
+      --build-arg BUILD_DATE=$(date -Iseconds) \
       .
   - >
     docker run --name rapidpro \
