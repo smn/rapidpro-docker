@@ -1,6 +1,6 @@
 import redis
 from getenv import env
-from urlparse import urlparse
+from urllib import parse
 from django.conf import settings
 from django.core.cache import cache
 
@@ -10,7 +10,7 @@ key_prefix = cache.make_key('django_compressor')
 
 REDIS_URL = env('REDIS_URL', required=True)
 
-up = urlparse(REDIS_URL)
+up = parse.urlparse(REDIS_URL)
 redis_host = up.hostname
 redis_port = int(up.port or 6379)
 redis_password = up.password or None
