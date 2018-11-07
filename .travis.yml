@@ -57,6 +57,7 @@ script:
   - >
     docker build --pull \
       --tag "$IMAGE" \
+      --cache-from "$IMAGE" \
       --build-arg RAPIDPRO_VERSION=$VERSION \
       --build-arg RAPIDPRO_REPO=$REPO \
       .
