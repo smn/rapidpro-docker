@@ -12,7 +12,8 @@ env:
     - REGISTRY_USER=rapidproautomation
     # NOTE: this is generated with `travis encrypt REGISTRY_PASS="the-password"`
     #       which is decrypted by Travis CI and set as environment variables
-    - secure: "ffYdrH1sxDNP+KrE3cnP2r5lYsRGOmPUwlBON60GsYKwMQDg8Of5vt9fK5FzW9p5SWTpcAhCHeuJjbQ8qB0i4Uh5HtAs2focQdH13CQSQ5RZroNP60gV4WQENmxHqCaLuMQ4zgLQjKdu2R1PkEaUwm/HdHOzQ1Gwt+QEivPgCxtxdvfMFoebffzunpISSoOxSA7DJLWfuWqhszOF2oa+KxrMp/DAVnjwKhyepqSbdxOfuYiKyEdmoiic8S4TLgeDcYSxJnZgGzDP8p3HRahGmXsosMeg2eNghohKZ+c2tiD7DBHbRIrikC1da6/XnsXpcz+ugHuMTw5QTvZcgqKfGkoOchg9/ae5vXWCNQL4b7CPPxgnuxO0jeNUgbeQLnbqrkyxgudCSrTRKlCdmE5G6QijzwyWYOy2BV7+8Ybs17EfqFtSnzn6J6D4+prbklQGy8zB3oyZZXPSPgTFdImyrYAL96Ag1jI6EbwfodzY7himEnquvmcpC9sDoEdX/Z9JWWRKAxqeADzDx/IXiVfT4M155Np8cq8pWFypKOy03DE8KsHnOwaPz0qxgl/imvXW198SUe9qmiavOCY0h+taHK50JK7mKzokCDI25OYbei91iW+0GSuQ4ZR78NeTDO4ktKDZkA9oYMHzi9oKoBCSe8SbZffkRGe6bK45MXvvfEo="
+    - secure: ffYdrH1sxDNP+KrE3cnP2r5lYsRGOmPUwlBON60GsYKwMQDg8Of5vt9fK5FzW9p5SWTpcAhCHeuJjbQ8qB0i4Uh5HtAs2focQdH13CQSQ5RZroNP60gV4WQENmxHqCaLuMQ4zgLQjKdu2R1PkEaUwm/HdHOzQ1Gwt+QEivPgCxtxdvfMFoebffzunpISSoOxSA7DJLWfuWqhszOF2oa+KxrMp/DAVnjwKhyepqSbdxOfuYiKyEdmoiic8S4TLgeDcYSxJnZgGzDP8p3HRahGmXsosMeg2eNghohKZ+c2tiD7DBHbRIrikC1da6/XnsXpcz+ugHuMTw5QTvZcgqKfGkoOchg9/ae5vXWCNQL4b7CPPxgnuxO0jeNUgbeQLnbqrkyxgudCSrTRKlCdmE5G6QijzwyWYOy2BV7+8Ybs17EfqFtSnzn6J6D4+prbklQGy8zB3oyZZXPSPgTFdImyrYAL96Ag1jI6EbwfodzY7himEnquvmcpC9sDoEdX/Z9JWWRKAxqeADzDx/IXiVfT4M155Np8cq8pWFypKOy03DE8KsHnOwaPz0qxgl/imvXW198SUe9qmiavOCY0h+taHK50JK7mKzokCDI25OYbei91iW+0GSuQ4ZR78NeTDO4ktKDZkA9oYMHzi9oKoBCSe8SbZffkRGe6bK45MXvvfEo=
+    - secure: dENLino1wAUBgRjsZ/rxNCxJBbLAgDYicPxSxIJT2kJ/PBwqWt2rYnQMhbamVHp7EqwgG8UnKAdE2gBOLM2ADnmLsSlQlam0GH6B/LFzdKmAgkHeo3jI8vYHiE6L9YGnYx07BBHRBLHteCIICe61Rw1hSkTK7B+SYmwcZIW2Yr0ncxzDhnCmzdf3+yrmMq8r2ERhe3uu8GBwFVCRy8e6mpeScS/6nUGhOWGnfG44KdxTLLVj9Pe1xx0DtIOmLayfvUHuz7VAPtRyl8B9g3DSJM9BfcEkyrVOJSy31XL0ktP0HeJlGvsiki1dHMxzokVO4vqQVdhyROuYDoYwgGQb1Ji+4yFBbyWaFooSBR2wtdTSBhFNlUkOQKbU2xH2K7WIlNcNeNTFgkTNJZlfn14bdlzS7o2EPAXIhGET9VakljZ0S8eabSssWdGQP4B140b31JIq+ovinbuw6BlJcScYHe55Wbx9EpfQli23/wTmHpb3jGu8zxFGhfMRLHF+h+zGoEx2tNmTTTjX3Nd2rgtaDYwleJyFw6uxcr6dz4FTkqWjXzx8kUDbOauDc7phfo1kzQ4YB63BpSyl+0x/2NUTFWveN+ZWokOsnEG1xIfx/RwEU/267EvrxmNOzEGaep8PyruU+l1fBIwZDL7zro5hZ9aFocK5+0hAihaSRcBSGAk=
   matrix:
     - IMAGE="sdehaan/rapidpro" VERSION="" REPO="smn/rapidpro"
     - IMAGE="sdehaan/rapidpro" VERSION="master" REPO="smn/rapidpro"
@@ -28,7 +29,7 @@ before_cache:
 before_script:
   - echo "https://api.github.com/repos/$REPO/tags"
   - jq --version
-  - curl -s https://api.github.com/repos/$REPO/tags | tee ./tags.json
+  - curl -H 'Authorization: Bearer $GITHUB_ACCESS_TOKEN' -s https://api.github.com/repos/$REPO/tags | tee ./tags.json
   - head ./tags.json
   - LATEST_TAG=$(cat ./tags.json | jq -r '.[0].name')
   - VERSION=${VERSION:-$LATEST_TAG}
