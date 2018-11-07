@@ -11,38 +11,39 @@ ENV PIP_RETRIES=120 \
 # TODO determine if a more recent version of Node is needed
 # TODO extract openssl and tar to their own upgrade/install line
 RUN set -ex \
-  && apk add --no-cache nodejs-lts nodejs-npm openssl tar \
-  && npm install -g coffee-script less bower
+    && apk add --no-cache nodejs-lts nodejs-npm openssl tar \
+    && npm install -g coffee-script less bower
 
 WORKDIR /rapidpro
 
 RUN set -ex \
-        && apk add --no-cache --virtual .build-deps \
-                bash \
-                patch \
-                git \
-                gcc \
-                g++ \
-                make \
-                libc-dev \
-                musl-dev \
-                linux-headers \
-                postgresql-dev \
-                libjpeg-turbo-dev \
-                libpng-dev \
-                freetype-dev \
-                libxslt-dev \
-                libxml2-dev \
-                zlib-dev \
-                libffi-dev \
-                pcre-dev \
-                readline \
-                readline-dev \
-                ncurses \
-                ncurses-dev \
-                libzmq \
-                && pip install -U virtualenv \
-                && virtualenv /venv
+    && apk add --no-cache --virtual .build-deps \
+    bash \
+    patch \
+    git \
+    gcc \
+    g++ \
+    make \
+    libc-dev \
+    musl-dev \
+    linux-headers \
+    postgresql-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    freetype-dev \
+    libxslt-dev \
+    libxml2-dev \
+    zlib-dev \
+    libffi-dev \
+    pcre-dev \
+    readline \
+    readline-dev \
+    ncurses \
+    ncurses-dev \
+    libzmq \
+    && pip install -U virtualenv \
+    && pip install -U pip \
+    && virtualenv /venv
 
 ARG RAPIDPRO_VERSION
 ARG RAPIDPRO_REPO
@@ -58,11 +59,11 @@ COPY requirements.txt /app/requirements.txt
 RUN LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "/venv/bin/pip install setuptools==33.1.1" \
     && LIBRARY_PATH=/lib:/usr/lib /bin/sh -c "/venv/bin/pip install -r /app/requirements.txt" \
     && runDeps="$( \
-      scanelf --needed --nobanner --recursive /venv \
-              | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-              | sort -u \
-              | xargs -r apk info --installed \
-              | sort -u \
+    scanelf --needed --nobanner --recursive /venv \
+    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+    | sort -u \
+    | xargs -r apk info --installed \
+    | sort -u \
     )" \
     && apk --no-cache add --virtual .python-rundeps $runDeps \
     && apk del .build-deps && rm -rf /var/cache/apk/*
@@ -90,12 +91,12 @@ EXPOSE 8000
 COPY stack/startup.sh /
 
 LABEL org.label-schema.name="RapidPro" \
-      org.label-schema.description="RapidPro allows organizations to visually build scalable interactive messaging applications." \
-      org.label-schema.url="https://www.rapidpro.io/" \
-      org.label-schema.vcs-url="https://github.com/$RAPIDPRO_REPO" \
-      org.label-schema.vendor="Nyaruka, UNICEF, and individual contributors." \
-      org.label-schema.version=$RAPIDPRO_VERSION \
-      org.label-schema.schema-version="1.0"
+    org.label-schema.description="RapidPro allows organizations to visually build scalable interactive messaging applications." \
+    org.label-schema.url="https://www.rapidpro.io/" \
+    org.label-schema.vcs-url="https://github.com/$RAPIDPRO_REPO" \
+    org.label-schema.vendor="Nyaruka, UNICEF, and individual contributors." \
+    org.label-schema.version=$RAPIDPRO_VERSION \
+    org.label-schema.schema-version="1.0"
 
 CMD ["/startup.sh"]
 
