@@ -32,7 +32,6 @@ before_script:
   - 'curl -H "Authorization: Bearer $GITHUB_ACCESS_TOKEN" -s https://api.github.com/repos/$REPO/tags | tee ./tags.json'
   - head ./tags.json
   - LATEST_TAG=$(cat ./tags.json | jq -r '.[0].name')
-  - LATEST_TAG="v4.11-p2"
   - VERSION=${VERSION:-$LATEST_TAG}
 
 install:
