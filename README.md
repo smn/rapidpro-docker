@@ -226,5 +226,8 @@ Environment variables
 *MAILROOM_URL*
     Set the mailroom url for simulations, defaults to ``http://localhost:8090``
     
+*MAILROOM_AUTH_TOKEN*
+    Set the token for authenticating to mailroom with
+    
 *STORAGE_URL*
     Defaults to ``"https://" + AWS_BUCKET_DOMAIN``

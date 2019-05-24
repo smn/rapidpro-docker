@@ -170,4 +170,5 @@ for brand in BRANDING.values():
     COMPRESS_OFFLINE_CONTEXT.append(context)
 
 MAILROOM_URL = env("MAILROOM_URL", "http://localhost:8090")
+MAILROOM_AUTH_TOKEN = env("MAILROOM_AUTH_TOKEN", None)
 STORAGE_URL = env("STORAGE_URL", "https://" + AWS_BUCKET_DOMAIN)
