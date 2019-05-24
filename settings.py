@@ -168,3 +168,6 @@ for brand in BRANDING.values():
     context = dict(STATIC_URL=STATIC_URL, base_template='frame.html', debug=False, testing=False)
     context['brand'] = dict(slug=brand['slug'], styles=brand['styles'])
     COMPRESS_OFFLINE_CONTEXT.append(context)
+
+MAILROOM_URL = env("MAILROOM_URL", "http://localhost:8090")
+STORAGE_URL = env("STORAGE_URL", "https://" + AWS_BUCKET_DOMAIN)

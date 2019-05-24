@@ -222,3 +222,9 @@ Environment variables
 *IS_PROD*
   If you want channel or trigger activation / deactivation
   callbacks handled set this to ``on``.
+
+*MAILROOM_URL*
+    Set the mailroom url for simulations, defaults to ``http://localhost:8090``
+    
+*STORAGE_URL*
+    Defaults to ``"https://" + AWS_BUCKET_DOMAIN``
